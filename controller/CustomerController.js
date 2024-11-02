@@ -37,7 +37,20 @@ const findOneById = (req,resp)=> {
     }
 }
 const deleteOneById = (req,resp)=> {
-
+    try{
+        const customerId=req.params.id;
+        CustomerSchema.findByIdAndDelete(customerId)
+            .then(result => resp.status(201).json({
+            'message': 'Customer Deleted'
+        }))
+            .catch(error => resp.status(500).json({
+                'message': 'Something went wrong', error
+            }))
+    } catch (e) {
+        resp.status(500).json({
+            'message': 'Something went wrong', error: e
+        })
+    }
 }
 const updateById = (req,resp)=> {
 
