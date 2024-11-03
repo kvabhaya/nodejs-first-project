@@ -25,7 +25,7 @@ const findOneById = (req,resp)=> {
         CustomerSchema.findById(customerId)
             .then(result=>{
                 if(result){
-                    resp.status(201).json({'data':result})
+                    resp.status(200).json({'data':result})
                 }else{
                     resp.status(404).json({'message':'Customer Not Found'})
                 }
@@ -53,10 +53,48 @@ const deleteOneById = (req,resp)=> {
     }
 }
 const updateById = (req,resp)=> {
-
+    try{
+        const customerId=req.params.id;
+        CustomerSchema.findByIdAndUpdate(customerId, {
+            name: req.body.name,
+            address: req.body.address,
+            salary: req.body.salary
+        })
+            .then(result => resp.status(201).json({
+                'message': 'Customer Updated'
+            }))
+            .catch(error => resp.status(500).json({
+                'message': 'Something went wrong', error
+            }))
+    } catch (e) {
+        resp.status(500).json({
+            'message': 'Something went wrong', error: e
+        })
+    }
 }
 const search = (req,resp)=> {
+    try{
+        const {name,address} = req.query;
+        const page = parseInt(req.query.page) || 1;
+        const size = parseInt(req.query.size) || 10;
+        const query ={};
+        if(name) query.name=new RegExp(name,'i');
+        if(address) query.address=new RegExp(address,'i');
 
+        CustomerSchema.find(query)
+            .skip((page-1)*size)
+            .limit(size)
+            .then(result => resp.status(200).json({
+                'data':result
+            }))
+            .catch(error => resp.status(500).json({
+                'message': 'Something went wrong', error:error
+            }))
+    } catch (e) {
+        resp.status(500).json({
+            'message': 'Something went wrong', error: e
+        })
+    }
 }
 
 module.exports = {create, findOneById, deleteOneById, updateById, search}
