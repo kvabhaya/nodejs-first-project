@@ -1,5 +1,6 @@
 const CustomerSchema = require('../model/CustomerSchema');
 const create = (req,resp)=> {
+    // console.log(req.body);
     try {
         let customerSchema = new CustomerSchema({
             name: req.body.name,
@@ -74,7 +75,9 @@ const updateById = (req,resp)=> {
 }
 const search = (req,resp)=> {
     try{
-        const {name,address} = req.query;
+        const name = req.query.searchText || '';
+        const address = req.query.searchText || '';
+
         const page = parseInt(req.query.page) || 1;
         const size = parseInt(req.query.size) || 10;
         const query ={};
