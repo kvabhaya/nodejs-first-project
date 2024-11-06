@@ -1,5 +1,5 @@
 const UserSchema = require('../model/UserSchema');
-const create = (req,resp)=> {
+const signup = (req,resp)=> {
     // console.log(req.body);
     try {
         let userSchema = new UserSchema({
@@ -103,4 +103,4 @@ const create = (req,resp)=> {
 //     }
 // }
 
-module.exports = {create}
+module.exports = {signup}
