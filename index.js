@@ -24,4 +24,4 @@ app.get('/test',(req, res)=>{
     return res.json('server Works');
 })
 app.use('/api/v1/customers',CustomerRoute);
-app.use('api/v1/users',UserRoute);
+app.use('/api/v1/users',UserRoute);
