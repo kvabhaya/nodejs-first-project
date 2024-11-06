@@ -1,10 +1,21 @@
 const UserSchema = require('../model/UserSchema');
-const signup = (req,resp)=> {
+const bcrypt = require('bcrypt');
+
+const signup = async (req, resp) => {
     // console.log(req.body);
     try {
+
+        const existingUser = await UserSchema.findOne({email: req.body.email});
+
+        if(existingUser){
+            return resp.status(400).json({'message': 'User already exist'});
+        }
+
+        const hash = await bcrypt.hash(req.body.password,10);
+
         let userSchema = new UserSchema({
             email: req.body.email,
-            password: req.body.password,
+            password: hash,
             fullName: req.body.fullName
         });
         userSchema.save()
