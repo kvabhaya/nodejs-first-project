@@ -1,8 +1,19 @@
 const UserSchema = require('../model/UserSchema');
 const bcrypt = require('bcrypt');
 const wt = require('jsonwebtoken');
+const nodemailer = require('nodemailer');
 
 const secret = process.env.SECRET;
+
+nodemailer.createTransport({
+    host:process.env.EMAIL_HOST,
+    port:process.env.EMAIL_PORT,
+    secure:false,
+    auth:{
+        user:process.env.EMAIL_USER,
+        password:process.env.EMAIL_PASSWORD
+    }
+});
 
 const signup = async (req, resp) => {
     // console.log(req.body);
